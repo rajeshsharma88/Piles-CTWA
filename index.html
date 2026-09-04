@@ -46,10 +46,10 @@
                     <span class="stars">⭐⭐⭐⭐⭐</span> 5.0 (15000+)
                 </li>
                 <li>
-                    <a href="https://wa.me/917042444675?text=PILES3AKIT" target="_blank" rel="noopener" class="btn-order">
-                        💬 ORDER ON WHATSAPP
+                    <button type="button" class="btn-order js-order-btn">
+                        🛒 ORDER NOW
                         <span class="delivery-tag">Free Delivery</span>
-                    </a>
+                    </button>
                 </li>
             </ul>
 
@@ -113,9 +113,9 @@
 
                     <!-- CTA -->
                     <div class="cta-group">
-                        <a href="https://wa.me/917042444675?text=PILES3AKIT" target="_blank" rel="noopener" class="btn-order-hero">
-                            💬 ORDER ON WHATSAPP
-                        </a>
+                        <button type="button" class="btn-order-hero js-order-btn">
+                            🛒 ORDER NOW
+                        </button>
                         <span class="guarantee">✅ Try risk-free. 100% Money-Back Guarantee</span>
                     </div>
 
@@ -170,7 +170,7 @@
             </div>
 
             <div class="benefits-cta">
-                <a href="https://wa.me/917042444675?text=PILES3AKIT" target="_blank" rel="noopener" class="btn-benefits">💬 व्हाट्सएप पर ऑर्डर करें</a>
+                <button type="button" class="btn-benefits js-order-btn">🛒 अभी ऑर्डर करें</button>
                 <span class="benefits-guarantee">✅ जोखिम मुक्त। 100% मनी-बैक गारंटी</span>
             </div>
         </div>
@@ -556,9 +556,9 @@
                         <h3>💬 अभी ऑर्डर करें</h3>
                         <p class="form-subtitle">Get FREE Doctor Consultation</p>
 
-                        <a href="https://wa.me/917042444675?text=PILES3AKIT" target="_blank" rel="noopener" class="btn-order-now" style="display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;">
-                            💬 WhatsApp पर ऑर्डर करें
-                        </a>
+                        <button type="button" class="btn-order-now js-order-btn" style="display:flex;align-items:center;justify-content:center;gap:10px;">
+                            🛒 अभी ऑर्डर करें
+                        </button>
 
                         <p class="form-security">🔒 आपकी जानकारी सुरक्षित है</p>
                     </div>
@@ -573,10 +573,10 @@
     <!-- ============================================================ -->
     <div class="floating-widgets">
         <!-- WhatsApp Order Button -->
-        <a href="https://wa.me/917042444675?text=PILES3AKIT" target="_blank" rel="noopener" class="float-order">
-            <span class="float-icon">💬</span>
+        <button type="button" class="float-order js-order-btn">
+            <span class="float-icon">🛒</span>
             <span class="float-text">Order Now</span>
-        </a>
+        </button>
     </div>
 
     <!-- ============================================================ -->
@@ -640,7 +640,67 @@
         </div>
     </footer>
 
+    <!-- ============================================================ -->
+    <!-- ORDER FORM MODAL (Lead capture + WhatsApp OTP verification) -->
+    <!-- ============================================================ -->
+    <div class="order-modal-overlay" id="orderModalOverlay" hidden>
+        <div class="order-modal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+            <button type="button" class="order-modal-close" id="orderModalClose" aria-label="Close">×</button>
+
+            <!-- Step 1: Lead form -->
+            <div class="order-modal-step" id="stepForm">
+                <h3 id="orderModalTitle">🛒 अपना ऑर्डर पूरा करें</h3>
+                <p class="order-modal-sub">नीचे अपनी जानकारी भरें, हम WhatsApp पर OTP भेजकर वेरीफाई करेंगे</p>
+                <form id="leadForm" novalidate>
+                    <label>पूरा नाम
+                        <input type="text" id="leadName" name="name" required autocomplete="name">
+                    </label>
+                    <label>WhatsApp मोबाइल नंबर
+                        <input type="tel" id="leadMobile" name="mobile" inputmode="numeric" maxlength="10" required
+                            autocomplete="tel" placeholder="10 अंकों का नंबर">
+                    </label>
+                    <label>उम्र
+                        <input type="number" id="leadAge" name="age" min="1" max="120" required>
+                    </label>
+                    <label>पता (वैकल्पिक)
+                        <textarea id="leadAddress" name="address" rows="2"></textarea>
+                    </label>
+                    <input type="text" id="leadHoneypot" name="company" class="hp-field" tabindex="-1"
+                        autocomplete="off">
+                    <p class="order-modal-error" id="formError" hidden></p>
+                    <button type="submit" class="btn-order-now" id="sendOtpBtn">OTP भेजें</button>
+                </form>
+            </div>
+
+            <!-- Step 2: OTP -->
+            <div class="order-modal-step" id="stepOtp" hidden>
+                <h3>📲 OTP दर्ज करें</h3>
+                <p class="order-modal-sub">हमने आपके WhatsApp नंबर <strong id="otpMobileDisplay"></strong> पर 6 अंकों
+                    का OTP भेजा है</p>
+                <form id="otpForm" novalidate>
+                    <input type="text" id="otpInput" inputmode="numeric" maxlength="6" pattern="[0-9]{6}"
+                        placeholder="------" class="otp-input" required autocomplete="one-time-code">
+                    <p class="order-modal-error" id="otpError" hidden></p>
+                    <button type="submit" class="btn-order-now" id="verifyOtpBtn">वेरीफाई करें</button>
+                    <div class="order-modal-links">
+                        <button type="button" class="order-modal-link" id="resendOtpBtn" disabled>
+                            OTP दोबारा भेजें (<span id="resendTimer">60</span>s)
+                        </button>
+                        <button type="button" class="order-modal-link" id="backToFormBtn">← जानकारी बदलें</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Loading -->
+            <div class="order-modal-loading" id="modalLoading" hidden>
+                <div class="spinner"></div>
+                <p>कृपया प्रतीक्षा करें...</p>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script src="order-modal.js"></script>
 
 </body>
 

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>धन्यवाद! - AAROGYA INDIA</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .thankyou-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            background: #f5f7fa;
+        }
+
+        .thankyou-card {
+            background: #fff;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            padding: 44px 32px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .thankyou-icon {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+        }
+
+        .thankyou-card h1 {
+            font-size: 1.6rem;
+            color: #1a3c34;
+            margin-bottom: 12px;
+        }
+
+        .thankyou-card p {
+            color: #5a6b73;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .thankyou-card a.home-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #25D366, #1DA851);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="thankyou-page">
+        <div class="thankyou-card">
+            <div class="thankyou-icon">✅</div>
+            <h1 id="thankyouHeading">धन्यवाद! आपका ऑर्डर दर्ज हो गया है</h1>
+            <p>
+                हमारी टीम जल्द ही आपके WhatsApp नंबर पर संपर्क करेगी और ऑर्डर की पुष्टि करेगी।
+                कृपया अपना फोन ऑन रखें। 🙏
+            </p>
+            <a href="index.html" class="home-link">← होम पेज पर वापस जाएं</a>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name');
+        if (name) {
+            document.getElementById('thankyouHeading').textContent = `धन्यवाद ${name}! आपका ऑर्डर दर्ज हो गया है`;
+        }
+    </script>
+</body>
+
+</html>

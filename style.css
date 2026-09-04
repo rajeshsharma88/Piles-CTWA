@@ -19,6 +19,17 @@ html {
     outline-offset: 3px;
 }
 
+/* Buttons converted from <a> to <button> need their native chrome reset */
+.btn-order,
+.btn-order-hero,
+.btn-benefits,
+.btn-order-now,
+.float-order {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
 body {
     font-family: 'Segoe UI', 'Poppins', sans-serif;
     background: #f5f7fa;
@@ -2809,5 +2820,180 @@ body {
 
     .footer-disclaimer {
         font-size: 0.55rem;
+    }
+}
+
+/* ============================================================ */
+/* ORDER FORM MODAL (Lead capture + WhatsApp OTP verification) */
+/* ============================================================ */
+.order-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 30, 25, 0.65);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.order-modal-overlay[hidden] {
+    display: none;
+}
+
+.order-modal {
+    position: relative;
+    background: #fff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 20px;
+    padding: 32px 28px 28px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.order-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: #f0f2f5;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    line-height: 1;
+    color: #333;
+    cursor: pointer;
+}
+
+.order-modal-step[hidden] {
+    display: none;
+}
+
+.order-modal h3 {
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+    color: #1a3c34;
+}
+
+.order-modal-sub {
+    font-size: 0.9rem;
+    color: #5a6b73;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.order-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.order-modal label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #33474a;
+}
+
+.order-modal input,
+.order-modal textarea {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 12px 14px;
+    border: 1.5px solid #d8e2e5;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.order-modal input:focus,
+.order-modal textarea:focus {
+    border-color: #25D366;
+}
+
+.order-modal .hp-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.otp-input {
+    text-align: center;
+    letter-spacing: 10px;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.order-modal-error {
+    color: #d93025;
+    font-size: 0.85rem;
+    background: #fdecea;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.order-modal-error[hidden] {
+    display: none;
+}
+
+.order-modal-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.order-modal-link {
+    background: none;
+    border: none;
+    color: #1DA851;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.order-modal-link:disabled {
+    color: #9aa5a8;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+.order-modal-loading {
+    text-align: center;
+    padding: 30px 0;
+}
+
+.order-modal-loading[hidden] {
+    display: none;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 14px;
+    border: 4px solid #d8e2e5;
+    border-top-color: #25D366;
+    border-radius: 50%;
+    animation: order-spin 0.8s linear infinite;
+}
+
+@keyframes order-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 480px) {
+    .order-modal {
+        padding: 26px 20px 22px;
     }
 }
