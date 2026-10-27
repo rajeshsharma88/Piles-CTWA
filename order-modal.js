@@ -101,7 +101,7 @@
     }
 
     async function sendOtp(lead) {
-        const res = await fetch('/api/send-otp.php', {
+        const res = await fetch('api/send-otp.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(lead),
@@ -121,7 +121,7 @@
             return;
         }
 
-        currentLead = {
+        const lead = {
             name: leadName.value.trim(),
             mobile: leadMobile.value.trim(),
             age: leadAge.value.trim(),
@@ -131,14 +131,8 @@
 
         showLoading(true);
         try {
-            const data = await sendOtp(currentLead);
-            currentToken = data.token;
-            otpMobileDisplay.textContent = currentLead.mobile;
-            otpInput.value = '';
-            hideError(otpError);
-            resendOtpBtn.textContent = 'OTP दोबारा भेजें';
-            showStep('otp');
-            startResendTimer();
+            await window.submitLead(lead, 'popup-modal');
+            window.location.href = 'thank-you.html?name=' + encodeURIComponent(lead.name);
         } catch (err) {
             showStep('form');
             showError(formError, err.message);
@@ -157,7 +151,7 @@
 
         showLoading(true);
         try {
-            const res = await fetch('/api/verify-otp.php', {
+            const res = await fetch('api/verify-otp.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ mobile: currentLead.mobile, otp, token: currentToken }),

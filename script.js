@@ -104,3 +104,110 @@ document.querySelectorAll('.footer-links a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// ============================================================ //
+// SHORTS AUTO-SCROLL SLIDER
+// ============================================================ //
+(function () {
+    const track = document.getElementById('shortsTrack');
+    const prevBtn = document.getElementById('shortsPrev');
+    const nextBtn = document.getElementById('shortsNext');
+    if (!track) return;
+
+    let isPaused = false;
+    let resumeTimer = null;
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    function getStep() {
+        const card = track.querySelector('.shorts-card');
+        if (!card) return 280;
+        const gap = 22;
+        return card.offsetWidth + gap;
+    }
+
+    function scrollNext() {
+        const maxScroll = track.scrollWidth - track.clientWidth;
+        if (track.scrollLeft >= maxScroll - 15) {
+            track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+            track.scrollBy({ left: getStep(), behavior: 'smooth' });
+        }
+    }
+
+    function scrollPrev() {
+        if (track.scrollLeft <= 15) {
+            track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+        } else {
+            track.scrollBy({ left: -getStep(), behavior: 'smooth' });
+        }
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            scrollNext();
+            pauseAutoScroll(4000);
+        });
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            scrollPrev();
+            pauseAutoScroll(4000);
+        });
+    }
+
+    function pauseAutoScroll(duration = 3500) {
+        isPaused = true;
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => {
+            isPaused = false;
+        }, duration);
+    }
+
+    // Auto-scroll every 3 seconds smoothly
+    const autoScrollTimer = setInterval(() => {
+        if (!isPaused && !isDown) {
+            scrollNext();
+        }
+    }, 3000);
+
+    // Pause on hover
+    track.addEventListener('mouseenter', () => { isPaused = true; });
+    track.addEventListener('mouseleave', () => { isPaused = false; });
+
+    // Touch support for mobile
+    track.addEventListener('touchstart', () => {
+        isPaused = true;
+        clearTimeout(resumeTimer);
+    }, { passive: true });
+
+    track.addEventListener('touchend', () => {
+        pauseAutoScroll(3000);
+    }, { passive: true });
+
+    // Drag-to-scroll support for desktop mouse
+    track.addEventListener('mousedown', (e) => {
+        isDown = true;
+        isPaused = true;
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+        clearTimeout(resumeTimer);
+    });
+
+    window.addEventListener('mouseup', () => {
+        if (isDown) {
+            isDown = false;
+            pauseAutoScroll(3000);
+        }
+    });
+
+    track.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        track.scrollLeft = scrollLeft - walk;
+    });
+})();

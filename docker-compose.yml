@@ -1,0 +1,12 @@
+services:
+  pile:
+    build: .
+    image: pile:latest
+    container_name: pile
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pile-site.entrypoints=websecure"
+      - "traefik.http.routers.pile-site.rule=Host(`pile.aarogya.cloud`)"
+      - "traefik.http.routers.pile-site.tls.certresolver=letsencrypt"
+      - "traefik.http.services.pile.loadbalancer.server.port=80"
